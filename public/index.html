@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>we reincarnate</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.cdnfonts.com/css/radwave-demo" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+    /* Удаляем все стили из head, чтобы не конфликтовать с style.css */
+    .nickname-marquee {
+      width: 100vw;
+      overflow: hidden;
+      background: linear-gradient(90deg, #181c2f 0%, #232946 100%);
+      padding: 18px 0;
+      box-shadow: 0 2px 16px 0 #181c2f55;
+    }
+    .marquee-track {
+      display: inline-block;
+      white-space: nowrap;
+      animation: scroll-left 28s linear infinite;
+      will-change: transform;
+    }
+    .nickname {
+      display: inline-block;
+      margin-right: 60px;
+      font-size: 22px;
+      color: #fff;
+      text-decoration: none;
+      font-family: inherit;
+      text-shadow: 0 0 8px #00ffe7, 0 0 2px #00ffe7;
+      letter-spacing: 1px;
+      transition: 
+        color 0.2s,
+        text-shadow 0.2s,
+        transform 0.2s,
+        filter 0.2s;
+    }
+    .nickname:hover {
+      color: #00ffe7;
+      text-shadow: 0 0 16px #00ffe7, 0 0 4px #fff;
+      transform: scale(1.15) rotate(-2deg);
+      filter: brightness(1.3) drop-shadow(0 0 8px #00ffe7);
+      animation-play-state: paused;
+    }
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(100vw);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+    .nickname-traffic {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 340px;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 2;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .subscribers-platform {
+      width: 100vw;
+      max-width: 100vw;
+      margin: 32px 0 0 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      background: rgba(0,0,0,0.0);
+      box-shadow: none;
+      border-radius: 0;
+      padding: 0 0 16px 0;
+      overflow: visible;
+    }
+    /* Удаляем все стили shine-анимации для .subscribers-title и возвращаем обычный стиль */
+    .subscribers-title {
+      font-size: 2rem;
+      color: #00ffe7;
+      font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', monospace;
+      font-weight: bold;
+      margin-bottom: 8px;
+      text-shadow: 0 0 8px #00ffe7, 0 0 2px #00ffe7;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+    .nickname-traffic-window {
+      position: relative;
+      width: 100vw;
+      max-width: 100vw;
+      min-width: 0;
+      height: 220px; /* увеличено для шахматной сетки */
+      pointer-events: none;
+      z-index: 10;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      overflow: visible;
+      background: none;
+      margin: 0 auto;
+    }
+    .nickname-traffic-nick {
+      position: absolute;
+      color: #fff;
+      font-family: Arial, sans-serif !important; /* Arial жирный */
+      font-weight: bold !important;
+      text-shadow: 0 0 8px #00ffe7, 0 0 2px #00ffe7;
+      white-space: nowrap;
+      filter: brightness(1.1);
+      transition: filter 0.2s, font-size 0.2s, left 0.2s;
+      text-decoration: none;
+      pointer-events: auto;
+      will-change: left;
+    }
+    .nickname-blink {
+      position: absolute;
+      color: #fff;
+      font-family: 'Arial Black', Arial, sans-serif !important;
+      font-weight: bold !important;
+      text-shadow: 0 0 8px #00ffe7, 0 0 2px #00ffe7;
+      white-space: nowrap;
+      font-size: 22px;
+      pointer-events: auto;
+      user-select: none;
+      transition: filter 0.2s, font-size 0.2s;
+    }
+    body {
+      overflow-x: hidden;
+      background: url('https://i.pinimg.com/originals/ef/e0/21/efe021233236cdeb1ebb466ba8fd956e.gif') no-repeat center center fixed;
+      background-size: cover;
+    }
+    @media (max-width: 600px) {
+      .nickname {
+        font-size: 16px;
+        margin-right: 32px;
+      }
+      .nickname-marquee {
+        padding: 10px 0;
+      }
+    }
+    .nickname-track-line {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+    }
+    .fade-anim { opacity: 0; transform: scale(0.8); transition: opacity 0.7s, transform 0.7s; }
+    .fade-anim.fade-in { opacity: 1; transform: scale(1.1); }
+    .fade-anim.fade-out { opacity: 0; transform: scale(0.8); }
+    /* Стили для картинки-кнопки в правом верхнем углу */
+    .click-hint {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 0.4cm;
+      height: auto;
+      cursor: pointer;
+      z-index: 100;
+    }
+    .main-nav {
+      position: fixed;
+      top: 24px;
+      right: 32px;
+      /* Удаляем все лишние стили, чтобы совпадало с style.css */
+      background: none;
+      box-shadow: none;
+      border-radius: 0;
+      backdrop-filter: none;
+      z-index: 2001;
+    }
+    .main-nav ul {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 32px;
+      padding: 0;
+      margin: 0;
+      background: none;
+      box-shadow: none;
+    }
+    .main-nav li {
+      margin: 0;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: #b22222;
+      font-family: 'Radwave Demo', Arial, sans-serif !important;
+      font-weight: bold;
+      letter-spacing: 1px;
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background: linear-gradient(90deg, transparent, #b22222, transparent);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+    .nav-link.active {
+      color: #800000;
+      background: rgba(178,34,34,0.15);
+      outline: none;
+      border-radius: 6px;
+      box-shadow: 0 2px 12px 0 rgba(178,34,34,0.10);
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-link.active:active,
+    .nav-link.active:focus {
+      color: #800000;
+      background: rgba(255, 105, 180, 0.18); /* розоватый оттенок */
+      outline: none;
+      border-radius: 6px;
+      box-shadow: 0 2px 14px 0 rgba(255, 105, 180, 0.13);
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-link:not(.active):active,
+    .nav-link:not(.active):focus {
+      color: #b22222;
+      background: rgba(178,34,34,0.10);
+      outline: none;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px 0 rgba(178,34,34,0.08);
+      transition: background 0.2s, color 0.2s;
+    }
+  </style>
+  <div class="platform">
+    <header>
+      <div class="logo">
+        <a href="https://t.me/wereincarnate" target="_blank"><img src="Images/telegram.png" class="logo-icon" /></a>
+        <span class="logo-we" style="font-family: 'Radwave Demo', Arial, sans-serif !important; font-weight: bold; display: inline-block; color: #800000;">WE</span>
+        <br>
+        <span class="logo-text" style="font-family: 'Radwave Demo', Arial, sans-serif; font-weight: bold; display: inline-block;">reincarnates</span>
+      </div>
+    </header>
+
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/" class="nav-link active">Home</a></li>
+        <li><a href="/pricelist/" class="nav-link">Price List</a></li>
+      </ul>
+    </nav>
+
+    <main>
+
+      <div class="card" onclick="handleClick(this, 'warlamov')" style="position: relative;">
+        <img class="avatar" src="Images/warlamov.jpg" alt="warlamov" />
+        <img src="Images/click.png" alt="click here" style="position: absolute; top: 8px; right: 8px; width: 28px; height: auto; z-index: 10;" />
+        <h2>warlamov</h2>
+        <div class="role">owner | coder</div>
+        <div class="icons">
+          <a href="https://discordid.netlify.app/?id=1279217258018902128" target="_blank"><img src="Images/discord.png" width="32" /></a>
+          <a href="https://t.me/warlamovreal" target="_blank"><img src="Images/telegram.png" width="32" /></a>
+        </div>
+      </div>
+
+      <div class="card" onclick="handleClick(this, 'mortmode')" style="position: relative;">
+        <img class="avatar" src="Images/mortmode.jpg" alt="mortmode" />
+        <img src="Images/click.png" alt="click here" style="position: absolute; top: 8px; right: 8px; width: 28px; height: auto; z-index: 10;" />
+        <h2>mortmode</h2>
+        <div class="role">co-owner | troll</div>
+        <div class="icons">
+          <a href="https://discordid.netlify.app/?id=1185238224797433858" target="_blank"><img src="Images/discord.png" width="32" /></a>
+          <a href="https://t.me/mortmode" target="_blank"><img src="Images/telegram.png" width="32" /></a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+
+  <script src="script.js"></script>
+</body>
+</html>

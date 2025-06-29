@@ -1,0 +1,808 @@
+/* Мини-платформы-кнопки под карточками прайс-листа */
+.mini-buy-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+  max-width: 900px;
+  margin: 24px auto 0 auto;
+  justify-items: center;
+}
+.mini-buy-btn {
+  width: 260px;
+  height: 40px;
+  min-width: 260px;
+  max-width: 260px;
+  min-height: 40px;
+  max-height: 40px;
+  background: #b22222;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.08rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px 0 rgba(178,34,34,0.10);
+  margin: 0;
+  padding: 0 12px;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.18s;
+  text-decoration: none;
+  outline: none;
+  position: relative;
+  z-index: 10;
+}
+.mini-buy-btn:hover, .mini-buy-btn:focus {
+  background: #800000;
+  color: #fff;
+  box-shadow: 0 4px 16px 0 #b2222240;
+  transform: translateY(-2px) scale(1.03);
+}
+.mini-buy-btn:active {
+  background: #ff6fae;
+  color: #fff;
+  box-shadow: 0 2px 8px 0 #ff6fae33;
+  transform: scale(0.98);
+}
+@media (max-width: 900px) {
+  .mini-buy-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 600px;
+  }
+  .mini-buy-btn {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .mini-buy-grid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+    gap: 12px;
+  }
+  .mini-buy-btn {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    font-size: 0.98rem;
+    height: 38px;
+    min-height: 38px;
+    max-height: 38px;
+  }
+}
+/* Плавающее описание платформы в левом верхнем углу */
+.floating-desc {
+  position: fixed;
+  top: 32px;
+  left: 32px;
+  background: rgba(0,0,0,0.82);
+  border-radius: 12px;
+  padding: 16px 22px;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.01rem;
+  box-shadow: 0 2px 16px 0 #00ffe733;
+  max-width: 320px;
+  min-width: 0;
+  pointer-events: auto;
+  z-index: 9999;
+  display: none;
+  user-select: text;
+  transition: opacity 0.25s;
+  white-space: pre-line;
+}
+
+.typing-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: #b22222;
+  margin-left: 2px;
+  animation: blink-caret 0.8s steps(1) infinite;
+  vertical-align: middle;
+}
+
+@keyframes blink-caret {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+.price-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Анимация линии (ухода) сверху */
+.price-card .desc-underline {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #ff6fae 0%, #ffb6e6 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+  z-index: 20;
+}
+.price-card.show-desc .desc-underline {
+  transform: scaleX(1);
+}
+
+.price-card .product-desc {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.price-card.show-desc .product-desc {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.price-card .typing-effect {
+  border-right: 2px solid #b22222;
+  animation: blink-caret 0.8s steps(1) infinite;
+}
+@keyframes blink-caret {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: #b22222; }
+}
+.logo-we {
+  color: #800000 !important;
+  font-family: 'Arial Black', Arial, sans-serif !important;
+  font-weight: bold !important;
+  margin-right: 5px;
+  text-shadow: none !important;
+  filter: none !important;
+  background: none !important;
+  mix-blend-mode: normal !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: 'Arial Black', Arial, sans-serif;
+  background: url('Images/bg.gif') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+}
+
+.platform {
+  width: 100vw;
+  min-height: 100vh;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* БЫЛО flex-start. Держать строго по центру! */
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+/* Платка — меню с 3 кнопками в правом верхнем углу */
+.platka {
+  position: fixed;
+  top: 24px;
+  right: 32px;
+  z-index: 2001;
+  background: rgba(0,0,0,0.32);
+  backdrop-filter: blur(10px);
+  border-radius: 0 0 0 24px;
+  box-shadow: 0 4px 24px 0 #00ffe733;
+  padding: 0 18px 0 18px;
+}
+@media (max-width: 700px) {
+  .platka {
+    top: 8px;
+    right: 0;
+    left: 0;
+    border-radius: 0 0 0 12px;
+    box-shadow: none;
+    padding: 0 2vw;
+  }
+}
+
+/* Основная платформа по центру */
+.main-platka {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+header {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.logo-icon {
+  margin-right: 10px;
+  width: 32px;
+  height: 32px;
+  transition: transform 0.3s;
+}
+
+.logo-icon:hover {
+  transform: scale(1.1);
+}
+
+.logo-ap {
+  color: #2a0000 !important;
+  margin-right: 5px;
+}
+
+.logo-we {
+  color: #800000 !important; /* бордовый */
+  font-family: 'Orbitron', Arial, sans-serif !important;
+  font-weight: 700 !important;
+  margin-right: 5px;
+  text-shadow: none !important;
+  filter: none !important;
+  background: none !important;
+  mix-blend-mode: normal !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+
+.logo-text {
+  color: white;
+}
+
+main {
+  display: flex;
+  justify-content: center; /* Держать строго по центру! */
+  align-items: center;     /* Держать строго по центру! */
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 10px;
+}
+
+/* ВАЖНО: Не изменяйте размеры карточек! Эти размеры подобраны для корректного отображения и на десктопе, и на телефоне. */
+.card {
+  width: 370px; /* Не менять! Оптимально для desktop и mobile */
+  height: 310px; /* Не менять! Оптимально для desktop и mobile */
+  background: rgba(30, 40, 60, 0); /* Цвет убран, только блюр */
+  backdrop-filter: blur(32px) saturate(180%) contrast(1.15);
+  -webkit-backdrop-filter: blur(32px) saturate(180%) contrast(1.15);
+  border-radius: 20px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.25);
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  color: white;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+h2, .role {
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.icons {
+  margin-top: 15px;
+}
+
+.icons a {
+  margin: 0 10px;
+  transition: transform 0.2s ease;
+}
+
+.icons a:hover {
+  transform: scale(1.2);
+}
+
+.typing {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 90%;
+  font-weight: bold;
+  font-family: 'Arial Black', Arial, sans-serif;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  opacity: 0;
+  max-height: 100%;
+  color: white;
+  caret-color: transparent;
+  text-align: left;
+  transition: opacity 0.5s ease;
+}
+
+.typing.typing-in {
+   animation: fadeInTyping 0.5s ease forwards;
+}
+
+.typing.typing-out {
+  animation: fadeOutTyping 0.5s ease forwards;
+}
+
+@keyframes fadeInTyping {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOutTyping {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(20px); }
+}
+
+.card.clicked .icons,
+.card.clicked .avatar,
+.card.clicked h2,
+.card.clicked .role {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.main-nav {
+  position: fixed;
+  top: 24px;
+  right: 32px;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  backdrop-filter: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: auto;
+  margin-top: 0;
+  z-index: 2001;
+}
+.main-nav ul {
+  display: flex;
+  flex-direction: row; /* всегда в ряд */
+  justify-content: flex-end;
+  align-items: center;
+  gap: 32px;
+  padding: 0;
+  margin: 0;
+  background: none;
+  box-shadow: none;
+  list-style: none; /* Убираем маркеры (точки) у элементов списка в навигации */
+}
+.main-nav li {
+  margin: 0;
+}
+.nav-link {
+  background: none;
+  box-shadow: none;
+  color: #00ffe7;
+  border-radius: 0;
+  opacity: 1;
+  font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', monospace;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  text-decoration: none;
+  transition: color 0.2s, text-shadow 0.2s;
+}
+.nav-link:hover {
+  color: #fff;
+  text-decoration: underline;
+  background: none;
+  box-shadow: none;
+}
+.nav-link.active {
+  color: #00ffe7;
+  text-decoration: none;
+  background: rgba(0, 40, 50, 0.32); /* Тёмный фон */
+  box-shadow: none;
+  border-radius: 10px;
+  text-shadow: none;
+  transition: background 0.2s;
+}
+
+/* Убираем затемнение/эффект при нажатии на активную кнопку навигации */
+.nav-link:active,
+.nav-link.active:active {
+  color: #00ffe7;
+  background: rgba(0,255,231,0.10);
+  box-shadow: 0 0 8px 2px #00ffe755;
+}
+
+/* Убираем анимацию-полоску под навигационными кнопками и любые эффекты при нажатии */
+.nav-link::after,
+.nav-link:hover::after,
+.nav-link.active::after {
+  display: none !important;
+  content: none !important;
+}
+
+@media (max-width: 700px) {
+  .main-nav {
+    top: 10px;
+    right: 10px;
+  }
+  .main-nav ul {
+    flex-direction: row; /* даже на мобильных в ряд */
+    gap: 10px;
+  }
+  .nav-link {
+    font-size: 0.98rem;
+    padding: 7px 10px;
+  }
+}
+
+/* Центрированное меню для главной страницы */
+.main-nav-center {
+  position: static;
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+  margin-bottom: 0;
+  z-index: 1001;
+}
+.main-nav-center ul {
+  justify-content: center;
+}
+
+@media (max-width: 480px) {
+  main {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .card {
+    width: 98vw;
+    aspect-ratio: 4 / 3;
+    height: auto;
+  }
+
+  .avatar {
+    width: 90px;
+    height: 90px;
+  }
+
+  header {
+    flex-direction: column;
+    top: 10px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .logo-icon {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.click-hint {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  width: 0.4cm;
+  height: 0.4cm;
+  z-index: 1000;
+  cursor: pointer;
+  opacity: 0.92;
+  transition: opacity 0.2s;
+}
+.click-hint:hover {
+  opacity: 1;
+}
+
+.center-title {
+  text-align: center;
+  font-family: 'Inter', 'Roboto', Arial, sans-serif;
+  font-size: 2.2rem;
+  color: #00ffe7;
+  margin: 36px 0 32px 0;
+  font-weight: 700;
+  letter-spacing: 1px;
+  width: 100vw;
+  position: relative;
+  z-index: 2;
+}
+
+.price-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
+  justify-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 40px auto;
+  padding: 0 12px;
+}
+
+/* Четкие и неизменяемые размеры для карточек прайс-листа */
+/* Четкие и неизменяемые размеры для карточек прайс-листа */
+.price-card {
+  background: rgba(30, 40, 60, 0.22);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18);
+  border: 1.5px solid rgba(255,255,255,0.13);
+  padding: 28px 18px 22px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s, background 0.25s;
+  cursor: pointer;
+  width: 260px !important;      /* Ширина карточки */
+  min-width: 260px !important;  /* Минимальная ширина карточки */
+  max-width: 260px !important;  /* Максимальная ширина карточки */
+  height: 260px !important;     /* Высота карточки */
+  min-height: 260px !important; /* Минимальная высота карточки */
+  max-height: 260px !important; /* Максимальная высота карточки */
+  position: relative;
+}
+.price-card:hover {
+  transform: scale(1.04) translateY(-4px);
+  box-shadow: 0 12px 36px 0 #00ffe733;
+  background: rgba(30, 40, 60, 0.32);
+}
+.card-avatar {
+  /* Увеличьте размер аватарки (лого) здесь */
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 14px;
+  border: 2.5px solid #00ffe7;
+  background: #181c2f;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  align-self: center;
+}
+.card-nick, .card-title {
+  /* Увеличьте размер названия и цены здесь */
+  font-family: 'Inter', 'Roboto', Arial, sans-serif;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.card-role {
+  font-family: 'Inter', 'Roboto', Arial, sans-serif;
+  font-size: 1rem;
+  color: #00ffe7;
+  font-weight: 500;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.card-socials {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 0;
+  margin-top: 2px;
+}
+.card-socials a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,255,231,0.08);
+  transition: background 0.2s;
+}
+.card-socials a:hover {
+  background: rgba(0,255,231,0.22);
+}
+.card-socials svg {
+  width: 22px;
+  height: 22px;
+  fill: #00ffe7;
+}
+
+/* Тайпинг-анимация */
+.typing-effect {
+  font-family: 'Inter', 'Roboto', Arial, sans-serif;
+  font-size: 1.05rem;
+  color: #fff;
+  min-height: 32px;
+  margin: 12px 0 0 0;
+  letter-spacing: 0.5px;
+  white-space: pre-line;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 0.4s;
+}
+
+/* Плашка-описание */
+.product-desc {
+  background: rgba(0,255,231,0.13);
+  color: #fff;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 12px 0 0 0;
+  font-size: 1.01rem;
+  font-family: 'Inter', 'Roboto', Arial, sans-serif;
+  box-shadow: 0 2px 16px 0 #00ffe733;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: opacity 0.5s, transform 0.5s;
+  text-align: center;
+}
+.product-desc.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Загрузка оплаты */
+.loader {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border: 3px solid #00ffe7;
+  border-top: 3px solid #232946;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 8px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Статусы оплаты */
+.pay-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 1.08rem;
+  font-family: 'Inter', 'Roboto', Arial, sans-serif;
+  font-weight: 600;
+}
+.pay-status.success {
+  color: #00ff88;
+}
+.pay-status.error {
+  color: #ff3b3b;
+}
+.pay-status svg {
+  width: 22px;
+  height: 22px;
+  fill: #00ffe7;
+}
+
+/* Price List карточка */
+.price-card .click-hint-card {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 0.6cm;
+  height: 0.6cm;
+  z-index: 10;
+  cursor: pointer;
+  opacity: 0.92;
+  transition: opacity 0.2s;
+}
+.price-card .click-hint-card:hover {
+  opacity: 1;
+}
+
+/* Удалены стили мини-платформы-кнопки Купить */
+
+.cards-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  width: 100vw;
+  margin: 0 auto;
+}
+@media (max-width: 700px) {
+  .cards-center {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+@media (max-width: 900px) {
+  .price-list-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+  }
+}
+@media (max-width: 600px) {
+  .price-list-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 0 2vw;
+  }
+  .center-title {
+    font-size: 1.3rem;
+    margin: 18px 0 18px 0;
+  }
+  .price-card {
+    width: 320px !important;      /* Ширина карточки (моб.) */
+    min-width: 320px !important;  /* Минимальная ширина карточки (моб.) */
+    max-width: 320px !important;  /* Максимальная ширина карточки (моб.) */
+    height: 270px !important;     /* Высота карточки (моб.) */
+    min-height: 270px !important; /* Минимальная высота карточки (моб.) */
+    max-height: 270px !important; /* Максимальная высота карточки (моб.) */
+    padding: 18px 6px 14px 6px;
+  }
+}
+
+/*
+  ВНИМАНИЕ! Положение карточек должно быть строго по центру экрана.
+  Не изменяйте justify-content и align-items для .platform и main!
+*/
+.platform {
+  /* ...existing code... */
+  justify-content: center; /* БЫЛО flex-start. Держать строго по центру! */
+  /* ...existing code... */
+}
+
+/*
+  ВНИМАНИЕ! Положение карточек должно быть строго по центру экрана.
+  Не изменяйте justify-content и align-items для main!
+*/
+main {
+  /* ...existing code... */
+  justify-content: center; /* Держать строго по центру! */
+  align-items: center;     /* Держать строго по центру! */
+  /* ...existing code... */
+}
+
+/* Для карточек на Price List возвращаем прежний размер */
+
+
+
+/* Убираем подчеркивание при наведении на навигационные кнопки */
+.nav-link:hover,
+.nav-link:focus {
+  text-decoration: none;
+}

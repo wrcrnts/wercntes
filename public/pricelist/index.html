@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>price list</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link href="https://fonts.cdnfonts.com/css/radwave-demo" rel="stylesheet">
+  <style>
+    .price-list-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 32px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .price-card {
+      transition: box-shadow 0.35s cubic-bezier(.4,0,.2,1), background 0.35s cubic-bezier(.4,0,.2,1), transform 0.25s cubic-bezier(.4,0,.2,1);
+      cursor: pointer;
+      user-select: none;
+    }
+    .price-card:active {
+      background: rgba(255, 105, 180, 0.22);
+      box-shadow: 0 2px 18px 0 rgba(255, 105, 180, 0.18);
+      transform: scale(0.98);
+    }
+    .product-desc {
+      min-height: 48px;
+      max-width: 100%;
+      font-size: 1.13rem;
+      color: #232946;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 8px;
+      line-height: 1.4;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      white-space: pre-line;
+      box-sizing: border-box;
+      overflow: hidden;
+      font-weight: bold;
+    }
+    .typing {
+      border-right: 2px solid #b22222;
+      animation: blink-caret 0.8s steps(1) infinite;
+    }
+    @keyframes blink-caret {
+      0%, 100% { border-color: transparent; }
+      50% { border-color: #b22222; }
+    }
+    .price-card:focus-within,
+    .price-card:hover,
+    .price-card.active-typing {
+      /* внутренний блюр и розовый фон только по нужным условиям */
+      background: none;
+      box-shadow: none;
+      outline: none;
+      transform: translateY(-4px) scale(1.025);
+    }
+
+    .price-card .platform-blur {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 12px;
+      pointer-events: none;
+      z-index: 1;
+      background: rgba(255, 105, 180, 0.13);
+      /* убран блюр */
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .price-card.active-typing .platform-blur,
+    .price-card:hover .platform-blur,
+    .price-card:focus-within .platform-blur,
+    .price-card:active .platform-blur {
+      opacity: 1;
+    }
+    .price-card:active {
+      background: rgba(255, 105, 180, 0.22);
+      box-shadow: 0 2px 18px 0 rgba(255, 105, 180, 0.18);
+      transform: scale(0.98);
+    }
+    .price-card:focus-within,
+    .price-card:hover {
+      background: none;
+      box-shadow: none;
+      outline: none;
+    }
+    .price-card:active {
+      background: rgba(255, 105, 180, 0.22);
+      box-shadow: 0 2px 18px 0 rgba(255, 105, 180, 0.18);
+    }
+    @media (max-width: 900px) {
+      .price-list-grid {
+        flex-direction: column;
+        align-items: center;
+        max-width: 600px;
+        gap: 24px;
+      }
+    }
+    @media (max-width: 600px) {
+      .price-list-grid {
+        flex-direction: column;
+        align-items: center;
+        max-width: 100%;
+        gap: 20px 12px;
+      }
+      .price-card {
+        min-width: 0;
+      }
+    }
+    @media (max-width: 420px) {
+      .price-list-grid {
+        flex-direction: column;
+        align-items: center;
+        max-width: 100%;
+      }
+    }
+    .nav-link {
+      text-decoration: none;
+      color: #b22222;
+      font-family: 'Radwave Demo', Arial, sans-serif !important;
+      font-weight: bold;
+      position: relative;
+      transition: color 0.3s;
+      letter-spacing: 0.5px;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background: linear-gradient(90deg, transparent, #b22222, transparent);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+    .nav-link.active {
+      color: #800000;
+      background: rgba(178,34,34,0.15);
+      outline: none;
+      border-radius: 6px;
+      box-shadow: 0 2px 12px 0 rgba(178,34,34,0.10);
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-link.active:active,
+    .nav-link.active:focus {
+      color: #800000;
+      background: rgba(255, 105, 180, 0.18); /* розоватый оттенок */
+      outline: none;
+      border-radius: 6px;
+      box-shadow: 0 2px 14px 0 rgba(255, 105, 180, 0.13);
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-link:not(.active):active,
+    .nav-link:not(.active):focus {
+      color: #b22222;
+      background: rgba(178,34,34,0.10);
+      outline: none;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px 0 rgba(178,34,34,0.08);
+      transition: background 0.2s, color 0.2s;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="platform">
+    <!-- header with logo was removed -->
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/pricelist/" class="nav-link active">Price List</a></li>
+      </ul>
+    </nav>
+    <h1 class="center-title" style="margin: 0; padding-top: 16px; padding-bottom: 0; text-align: center; position: absolute; top: 0; left: 0; right: 0; z-index: 10; font-size: 2.2rem; color: #fff; font-family: 'Radwave Demo', Arial, sans-serif; font-weight: bold; letter-spacing: 1px;">price list</h1>
+    <main>
+      <div class="price-list-grid">
+        <!-- DEF -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="price-card" data-product="DEF" tabindex="0" style="margin-bottom: 0;">
+            <img class="card-avatar" src="../Images/def.png" alt="DEF" />
+            <div class="card-title">DEF <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| 20$</span></div>
+            <img src="../Images/click.png" alt="click here" class="click-hint-card" />
+            <div class="desc-underline"></div>
+            <div class="product-desc"></div>
+          </div>
+          <button class="mini-buy-btn" data-product="DEF" style="margin-top: 10px;">Купить DEF</button>
+        </div>
+        <!-- ARGUS -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="price-card" data-product="ARGUS" tabindex="0" style="margin-bottom: 0;">
+            <img class="card-avatar" src="../Images/arguslogo.png" alt="ARGUS" />
+            <div class="card-title">ARGUS <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| PM</span></div>
+            <img src="../Images/click.png" alt="click here" class="click-hint-card" />
+            <div class="product-desc"></div>
+          </div>
+          <button class="mini-buy-btn" data-product="ARGUS" style="margin-top: 10px;">Купить ARGUS</button>
+        </div>
+        <!-- DEANON -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="price-card" data-product="DEANON" tabindex="0" style="margin-bottom: 0;">
+            <img class="card-avatar" src="../Images/dnn.png" alt="DEANON" />
+            <div class="card-title">DEANON <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| 4$</span></div>
+            <img src="../Images/click.png" alt="click here" class="click-hint-card" />
+            <div class="product-desc"></div>
+          </div>
+          <button class="mini-buy-btn" data-product="DEANON" style="margin-top: 10px;">Купить DEANON</button>
+        </div>
+        <!-- TROLLING -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="price-card troll" data-product="TROLLING" tabindex="0" style="margin-bottom: 0;">
+            <img class="card-avatar" src="../Images/trolling.png" alt="TROLLING" />
+            <div class="card-title">TROLLING <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| 4$</span></div>
+            <img src="../Images/click.png" alt="click here" class="click-hint-card" />
+            <div class="product-desc"></div>
+          </div>
+          <button class="mini-buy-btn" data-product="TROLLING" style="margin-top: 10px;">Купить TROLLING</button>
+        </div>
+        <!-- INTEL -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="price-card intel" data-product="INTEL" tabindex="0" style="margin-bottom: 0;">
+            <img class="card-avatar" src="../Images/intel.png" alt="INTEL" />
+            <div class="card-title">INTEL <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| 10$</span></div>
+            <img src="../Images/click.png" alt="click here" class="click-hint-card" />
+            <div class="product-desc"></div>
+          </div>
+          <button class="mini-buy-btn" data-product="INTEL" style="margin-top: 10px;">Купить INTEL</button>
+        </div>
+      </div>
+    </main>
+    <!-- Мини-платформы-кнопки теперь под каждой карточкой -->
+  </div>
+  <style>
+    .price-card-content {
+      transition: opacity 0.45s cubic-bezier(.4,0,.2,1), filter 0.45s cubic-bezier(.4,0,.2,1);
+      opacity: 1;
+      filter: none;
+    }
+    .price-card-content.hide {
+      opacity: 0;
+      filter: blur(8px);
+      pointer-events: none;
+    }
+    .desc-typing {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      right: 18px;
+      min-height: 48px;
+      color: #232946;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.13rem;
+      font-weight: bold;
+      background: none;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.45s cubic-bezier(.4,0,.2,1);
+      white-space: pre-line;
+      user-select: text;
+    }
+    .desc-typing.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .desc-typing .typing-caret {
+      border-right: 2px solid #b22222;
+      animation: blink-caret 0.8s steps(1) infinite;
+    }
+  </style>
+  <script>
+    // Описания для платформ
+    const productDescriptions = {
+      'DEF': 'Защита от доксов, сливов, троллинга и конфликтов. Быстро реагируем на угрозы, давление и попытки деанона. Предотвращаем развитие ситуации. Работаем до полной стабилизации ситуации.',
+      'DEANON': 'Полная или частичная деанонимизация личности. Работаем по любым входным данным. Данные передаются только заказчику. Результат зависит от входных, порой содействие клиента улучшает итог.',
+      'TROLLING': 'Угрозы, сливы, давление через окружение. Атаки, провокации, массовая травля. Выбиваем реакцию, портим репутацию, создаём конфликт. Подходит для интернет-войн, испортить репутацию или настроение.',
+      'INTEL': 'Разведка, слежка, сбор цифровых следов. Анализ активности, связи, аккаунтов. Отслеживаем поведение и фиксацию изменений. Предоставляем полный отчёт. Срок выполнения — от 7 до 14 дней, зависит от цели.',
+      'ARGUS': 'Универсальный мультитул бот для поиска, анализа и мониторинга данных. Работает по никам, логинам, телефонам и другим цифровым следам. Покупка производится в самом боте.'
+    };
+
+    // Для каждой карточки своё состояние
+    document.querySelectorAll('.price-card').forEach(card => {
+      // Вынести click-hint-card из .price-card-content, если он там
+      let clickHint = card.querySelector('.click-hint-card');
+      if (clickHint && clickHint.parentElement !== card) {
+        card.insertBefore(clickHint, card.firstChild);
+      }
+      // Обернуть содержимое карточки в .price-card-content (кроме click-hint-card)
+      if (!card.querySelector('.price-card-content')) {
+        const content = document.createElement('div');
+        content.className = 'price-card-content';
+        // Переносим все элементы кроме click-hint-card
+        Array.from(card.childNodes).forEach(node => {
+          if (node !== clickHint && node.nodeType === 1) content.appendChild(node);
+        });
+        card.appendChild(content);
+      }
+      // Добавить внутренний слой блюра и розового свечения
+      if (!card.querySelector('.platform-blur')) {
+        const blur = document.createElement('div');
+        blur.className = 'platform-blur';
+        card.appendChild(blur);
+      }
+      // Добавить контейнер для описания
+      if (!card.querySelector('.desc-typing')) {
+        const desc = document.createElement('div');
+        desc.className = 'desc-typing';
+        card.appendChild(desc);
+      }
+      // Состояние для этой карточки
+      let showingDesc = false;
+      let typingTimeout = null;
+      let isAnimating = false;
+      let hovered = false;
+      const product = card.getAttribute('data-product');
+      card.style.position = 'relative';
+
+      // Новая логика свечения платформы:
+      // 1. Свечение есть если: hovered === true (курсор наведён)
+      // 2. Свечение есть если: isAnimating === true (идёт анимация тайпинга)
+      // 3. Свечение есть если: showingDesc === true (описание показано и текст есть)
+      // 4. Нет свечения если: на мейн инфе (showingDesc === false, isAnimating === false, hovered === false)
+      function updateActiveTyping() {
+        // hovered — всегда подсвечивает
+        if (hovered) {
+          card.classList.add('active-typing');
+          return;
+        }
+        // isAnimating — всегда подсвечивает
+        if (isAnimating) {
+          card.classList.add('active-typing');
+          return;
+        }
+        // showingDesc — подсвечивает только если реально есть описание (desc.visible и не пусто)
+        const desc = card.querySelector('.desc-typing');
+        if (showingDesc && desc && desc.classList.contains('visible') && desc.textContent.trim().length > 0) {
+          card.classList.add('active-typing');
+          return;
+        }
+        // иначе — убираем свечение
+        card.classList.remove('active-typing');
+      }
+
+      function clearTyping(desc) {
+        if (typingTimeout) {
+          clearTimeout(typingTimeout);
+          typingTimeout = null;
+        }
+        if (desc) desc.innerHTML = '';
+      }
+
+      function typeText(element, text, speed = 18, cb) {
+        let i = 0;
+        element.innerHTML = '';
+        function typing() {
+          if (i <= text.length) {
+            element.innerHTML = text.slice(0, i) + '<span class="typing-caret"></span>';
+            i++;
+            typingTimeout = setTimeout(typing, speed + Math.random() * 30);
+          } else {
+            element.innerHTML = text;
+            typingTimeout = null;
+            if (cb) cb();
+          }
+        }
+        typing();
+      }
+
+      function eraseCard(cb) {
+        let line = card.querySelector('.erase-line');
+        if (!line) {
+          line = document.createElement('div');
+          line.className = 'erase-line';
+          line.style.position = 'absolute';
+          line.style.left = 0;
+          line.style.top = 0;
+          line.style.width = '100%';
+          line.style.height = '100%';
+          line.style.background = 'linear-gradient(90deg, #b22222 0%, #fff 100%)';
+          line.style.opacity = '0.12';
+          line.style.zIndex = 20;
+          line.style.transition = 'opacity 0.45s';
+          card.appendChild(line);
+        }
+        line.style.opacity = '1';
+        setTimeout(() => {
+          line.style.opacity = '0';
+          if (cb) setTimeout(cb, 350);
+        }, 350);
+      }
+
+      function showDescription() {
+        if (isAnimating) return;
+        isAnimating = true;
+        updateActiveTyping();
+        const content = card.querySelector('.price-card-content');
+        const desc = card.querySelector('.desc-typing');
+        const clickHint = card.querySelector('.click-hint-card');
+        if (!desc || !content) { isAnimating = false; updateActiveTyping(); return; }
+        clearTyping(desc);
+        desc.classList.remove('visible');
+        if (clickHint) clickHint.style.opacity = '0';
+        eraseCard(() => {
+          content.classList.add('hide');
+          desc.classList.add('visible');
+          // Важно: показываем описание только после завершения тайпинга
+          typeText(desc, productDescriptions[product], 18, () => {
+            isAnimating = false;
+            showingDesc = true;
+            updateActiveTyping();
+          });
+        });
+      }
+
+      function hideDescription() {
+        if (isAnimating) return;
+        isAnimating = true;
+        updateActiveTyping();
+        const content = card.querySelector('.price-card-content');
+        const desc = card.querySelector('.desc-typing');
+        const clickHint = card.querySelector('.click-hint-card');
+        if (!desc || !content) { isAnimating = false; updateActiveTyping(); return; }
+        clearTyping(desc);
+        desc.classList.remove('visible');
+        eraseCard(() => {
+          content.classList.remove('hide');
+          desc.innerHTML = '';
+          if (clickHint) clickHint.style.opacity = '1';
+          isAnimating = false;
+          showingDesc = false;
+          updateActiveTyping();
+        });
+      }
+
+      card.addEventListener('click', function(e) {
+        // Если клик был по кнопке "Купить" или "перейти в бота" — не триггерим анимацию карточки
+        const isBuyBtn = e.target.closest('.buy-btn');
+        if (isBuyBtn) return;
+        if (isAnimating) return;
+        // Если описание уже показано, скрываем его
+        if (showingDesc) {
+          hideDescription();
+          // Снять фокус с карточки после скрытия описания
+          card.blur();
+        } else {
+          // Важно: показываем описание только после завершения тайпинга
+          showDescription();
+        }
+      });
+
+      card.addEventListener('mouseenter', function() {
+        hovered = true;
+        updateActiveTyping();
+      });
+      card.addEventListener('mouseleave', function() {
+        hovered = false;
+        updateActiveTyping();
+      });
+
+      // Убрать фон при потере фокуса (например, клик вне карточки)
+      card.addEventListener('blur', function(e) {
+        // Только если фокус ушёл с карточки и её потомков
+        setTimeout(() => {
+          if (!card.matches(':focus-within')) {
+            updateActiveTyping();
+          }
+        }, 0);
+      });
+
+      // Сбросить свечение, если карточка вернулась на мейн инфу и курсор не наведен
+      card.addEventListener('transitionend', function(e) {
+        if (e.propertyName === 'opacity') {
+          if (!showingDesc && !isAnimating && !hovered) {
+            card.classList.remove('active-typing');
+          }
+        }
+      });
+    });
+  // --- CryptoBot оплата ---
+  async function payWithCryptoBot(product, amount) {
+    const response = await fetch('/api/create-invoice', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        amount: amount,
+        currency: 'USDT',
+        description: `Покупка ${product}`
+      })
+    });
+    const data = await response.json();
+    if (data.pay_url) {
+      window.open(data.pay_url, '_blank');
+    } else {
+      alert('Ошибка при создании счета: ' + (data.error || ''));
+    }
+  }
+
+  // Ссылки на CryptoBot для ручной оплаты (если нужно)
+  const cryptoBotLinks = {
+    DEF: 'https://t.me/CryptoBot?start=shop_def',
+    DEANON: 'https://t.me/CryptoBot?start=shop_deanon',
+    TROLLING: 'https://t.me/CryptoBot?start=shop_trolling',
+    INTEL: 'https://t.me/CryptoBot?start=shop_intel',
+    ARGUS: 'https://t.me/CryptoBot?start=shop_argus'
+  };
+
+  document.querySelectorAll('.mini-buy-btn').forEach(btn => {
+    btn.addEventListener('contextmenu', function(e) {
+      // ПКМ — открыть ссылку на CryptoBot
+      e.preventDefault();
+      const product = btn.getAttribute('data-product');
+      if (cryptoBotLinks[product]) {
+        window.open(cryptoBotLinks[product], '_blank');
+      } else {
+        alert('Ссылка на CryptoBot не найдена для этого продукта');
+      }
+    });
+    btn.addEventListener('click', function() {
+      const product = btn.getAttribute('data-product');
+      let amount = 0;
+      if (product === 'DEF') amount = 20;
+      if (product === 'DEANON') amount = 4;
+      if (product === 'TROLLING') amount = 4;
+      if (product === 'INTEL') amount = 10;
+      if (amount > 0) payWithCryptoBot(product, amount);
+      else alert('Для этого продукта оплата не настроена');
+    });
+  });
+  // (Подсказки убраны по просьбе пользователя)
+  </script>
+</body>
+</html>
