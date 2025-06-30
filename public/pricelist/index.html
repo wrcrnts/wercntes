@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../Images/wr.png" sizes="32x32" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>price list</title>
   <link rel="stylesheet" href="../style.css" />
@@ -29,7 +30,7 @@
       min-height: 48px;
       max-width: 100%;
       font-size: 1.13rem;
-      color: #232946;
+      color: #fff;
       font-family: 'JetBrains Mono', monospace;
       margin-top: 8px;
       line-height: 1.4;
@@ -254,7 +255,7 @@
       left: 18px;
       right: 18px;
       min-height: 48px;
-      color: #232946;
+      color: #fff;
       font-family: 'JetBrains Mono', monospace;
       font-size: 1.13rem;
       font-weight: bold;
@@ -485,13 +486,19 @@
     });
   // --- CryptoBot оплата ---
   async function payWithCryptoBot(product, amount) {
+    // Формируем красивое описание (без username)
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('ru-RU');
+    const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    const description = `🧾 Услуга: ${product}\n📅 Дата: ${dateStr} ${timeStr}`;
+
     const response = await fetch('/api/create-invoice', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         amount: amount,
         currency: 'USDT',
-        description: `Покупка ${product}`
+        description: description
       })
     });
     const data = await response.json();

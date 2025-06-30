@@ -592,8 +592,14 @@ h2, .role {
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 14px;
-  border: 2.5px solid #00ffe7;
-  background: #181c2f;
+  border: 3.5px solid rgb(95, 2, 2);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  align-self: center;
+}
+.price-card[data-product="ARGUS"] .card-avatar {
+  border: none;
   display: block;
   margin-left: auto;
   margin-right: auto;

@@ -22,39 +22,35 @@ function buildShortReport({ status, fp, userAgent, timezone, type, ip, geoStr, u
 
 function buildDetailsReport({ geoData, userAgent, fp, webrtcIps, ip, screenSize, width, height, platform, language, timezone, clientTime, uaParsed, hardwareConcurrency, deviceMemory, touchSupport }) {
   let detailsMsg = '';
-  detailsMsg += `Fingerprint: ${fp || 'неизвестно'}\n`;
-  detailsMsg += `User-Agent: ${userAgent || 'неизвестно'}\n`;
-  detailsMsg += `Язык браузера: ${language || 'неизвестно'}\n`;
-  detailsMsg += `Время на ПК: ${clientTime || 'неизвестно'}\n`;
-  detailsMsg += `Временная зона: ${timezone || 'неизвестно'}\n`;
-  detailsMsg += `IP: ${ip || 'неизвестно'}\n`;
-  detailsMsg += `Провайдер: ${geoData?.org || 'неизвестно'}\n`;
-  detailsMsg += `VPN/Proxy/Tor: ${(geoData?.proxy || geoData?.hosting) ? 'Да' : 'Нет'}\n`;
+  detailsMsg += `🆔 Fingerprint: ${fp || 'неизвестно'}\n`;
+  detailsMsg += `🕸️ User-Agent: ${userAgent || 'неизвестно'}\n`;
+  detailsMsg += `\n`;
+  detailsMsg += `🌍 IP: ${ip || 'неизвестно'}\n`;
+  detailsMsg += `🏢 Провайдер: ${geoData?.org || 'неизвестно'}\n`;
+  detailsMsg += `🛡️ VPN/Proxy/Tor: ${(geoData?.proxy || geoData?.hosting) ? 'Да' : 'Нет'}\n`;
   if (Array.isArray(webrtcIps) && webrtcIps.length) {
     let webrtcNote = '';
     if (ip && webrtcIps.some(wip => wip !== ip)) {
       webrtcNote = ' (отличаются от внешнего IP)';
     }
-    detailsMsg += `WebRTC IPs: ${webrtcIps.join(', ')}${webrtcNote}\n`;
+    detailsMsg += `🌐 WebRTC IPs: ${webrtcIps.join(', ')}${webrtcNote}\n`;
   } else {
-    detailsMsg += 'WebRTC IPs: нет данных\n';
+    detailsMsg += '🌐 WebRTC IPs: нет данных\n';
   }
-  if (screenSize) {
-    detailsMsg += `Размер экрана: ${screenSize}\n`;
-  } else if (width && height) {
-    detailsMsg += `Размер экрана: ${width}x${height}\n`;
-  } else {
-    detailsMsg += 'Размер экрана: неизвестно\n';
-  }
-  if (platform) detailsMsg += `Платформа: ${platform}\n`;
+  detailsMsg += `\n`;
+  let screenStr = screenSize ? screenSize : (width && height ? `${width}x${height}` : 'неизвестно');
+  detailsMsg += `🖥️ Экран: ${screenStr}`;
+  if (platform) detailsMsg += ` | Платформа: ${platform}`;
+  detailsMsg += `\n`;
   if (uaParsed && typeof uaParsed === 'object') {
-    detailsMsg += `Тип устройства: ${uaParsed.device || 'неизвестно'}\n`;
-    detailsMsg += `Браузер: ${uaParsed.browser || 'неизвестно'}\n`;
-    detailsMsg += `ОС: ${uaParsed.os || 'неизвестно'}\n`;
+    detailsMsg += `📱 Устройство: ${uaParsed.device || 'неизвестно'} | Браузер: ${uaParsed.browser || 'неизвестно'} | ОС: ${uaParsed.os || 'неизвестно'}\n`;
   }
-  if (typeof hardwareConcurrency !== 'undefined') detailsMsg += `Потоков CPU: ${hardwareConcurrency}\n`;
-  if (typeof deviceMemory !== 'undefined') detailsMsg += `ОЗУ (ГБ): ${deviceMemory}\n`;
-  if (typeof touchSupport !== 'undefined') detailsMsg += `Touch: ${touchSupport ? 'да' : 'нет'}\n`;
+  detailsMsg += `🗣️ Язык: ${language || 'неизвестно'} | Часовой пояс: ${timezone || 'неизвестно'}\n`;
+  detailsMsg += `⏰ Время на ПК: ${clientTime || 'неизвестно'}\n`;
+  let cpuStr = typeof hardwareConcurrency !== 'undefined' ? hardwareConcurrency : 'неизвестно';
+  let ramStr = typeof deviceMemory !== 'undefined' ? deviceMemory : 'неизвестно';
+  let touchStr = typeof touchSupport !== 'undefined' ? (touchSupport ? 'да' : 'нет') : 'неизвестно';
+  detailsMsg += `🧠 CPU: ${cpuStr} | ОЗУ: ${ramStr} ГБ | Touch: ${touchStr}\n`;
   return detailsMsg;
 }
 
