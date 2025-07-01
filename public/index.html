@@ -10,7 +10,10 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-    /* Удаляем все стили из head, чтобы не конфликтовать с style.css */
+
+    /******************************************
+     * Стили для ПК и планшетов (Desktop & Tablet styles)
+     ******************************************/
     .nickname-marquee {
       width: 100vw;
       overflow: hidden;
@@ -80,7 +83,6 @@
       padding: 0 0 16px 0;
       overflow: visible;
     }
-    /* Удаляем все стили shine-анимации для .subscribers-title и возвращаем обычный стиль */
     .subscribers-title {
       font-size: 2rem;
       color: #00ffe7;
@@ -136,15 +138,6 @@
       background: url('https://i.pinimg.com/originals/ef/e0/21/efe021233236cdeb1ebb466ba8fd956e.gif') no-repeat center center fixed;
       background-size: cover;
     }
-    @media (max-width: 600px) {
-      .nickname {
-        font-size: 16px;
-        margin-right: 32px;
-      }
-      .nickname-marquee {
-        padding: 10px 0;
-      }
-    }
     .nickname-track-line {
       position: absolute;
       width: 100%;
@@ -169,7 +162,6 @@
       position: fixed;
       top: 24px;
       right: 32px;
-      /* Удаляем все лишние стили, чтобы совпадало с style.css */
       background: none;
       box-shadow: none;
       border-radius: 0;
@@ -221,7 +213,6 @@
       box-shadow: 0 2px 12px 0 rgba(178,34,34,0.10);
       transition: background 0.2s, color 0.2s;
     }
-
     .nav-link.active:active,
     .nav-link.active:focus {
       color: #800000;
@@ -231,7 +222,6 @@
       box-shadow: 0 2px 14px 0 rgba(255, 105, 180, 0.13);
       transition: background 0.2s, color 0.2s;
     }
-
     .nav-link:not(.active):active,
     .nav-link:not(.active):focus {
       color: #b22222;
@@ -241,10 +231,26 @@
       box-shadow: 0 2px 8px 0 rgba(178,34,34,0.08);
       transition: background 0.2s, color 0.2s;
     }
+
+    /******************************************
+     * Стили для мобильных устройств (Mobile styles)
+     ******************************************/
+    @media (max-width: 600px) {
+      .nickname {
+        font-size: 16px;
+        margin-right: 32px;
+      }
+      .nickname-marquee {
+        padding: 10px 0;
+      }
+    }
   </style>
-  <div class="platform">
+
+
+  <!-- =================== ПК и планшеты =================== -->
+  <div class="platform desktop-only">
     <header>
-      <div class="logo">
+      <div class="logo desktop-logo">
         <a href="https://t.me/wereincarnate" target="_blank"><img src="Images/tg.png" class="logo-icon" /></a>
         <span class="logo-we" style="font-family: 'Radwave Demo', Arial, sans-serif !important; font-weight: bold; display: inline-block; color: #800000;">WE</span>
         <br>
@@ -252,7 +258,7 @@
       </div>
     </header>
 
-    <nav class="main-nav">
+    <nav class="main-nav desktop-nav">
       <ul>
         <li><a href="/" class="nav-link active">Home</a></li>
         <li><a href="/pricelist/" class="nav-link">Price List</a></li>
@@ -260,7 +266,6 @@
     </nav>
 
     <main>
-
       <div class="card" onclick="handleClick(this, 'warlamov')" style="position: relative;">
         <img class="avatar" src="Images/warlamov.jpg" alt="warlamov" />
         <img src="Images/click.png" alt="click here" style="position: absolute; top: 8px; right: 8px; width: 28px; height: auto; z-index: 10;" />
@@ -271,7 +276,48 @@
           <a href="https://t.me/warlamovreal" target="_blank"><img src="Images/telegram.png" width="32" /></a>
         </div>
       </div>
+      <div class="card" onclick="handleClick(this, 'mortmode')" style="position: relative;">
+        <img class="avatar" src="Images/mortmode.jpg" alt="mortmode" />
+        <img src="Images/click.png" alt="click here" style="position: absolute; top: 8px; right: 8px; width: 28px; height: auto; z-index: 10;" />
+        <h2>mortmode</h2>
+        <div class="role">co-owner | troll</div>
+        <div class="icons">
+          <a href="https://discordid.netlify.app/?id=1185238224797433858" target="_blank"><img src="Images/discord.png" width="32" /></a>
+          <a href="https://t.me/mortmode" target="_blank"><img src="Images/telegram.png" width="32" /></a>
+        </div>
+      </div>
+    </main>
+  </div>
 
+
+  <!-- =================== Мобильные устройства =================== -->
+  <div class="platform mobile-only">
+    <header>
+      <div class="logo mobile-logo">
+        <a href="https://t.me/wereincarnate" target="_blank"><img src="Images/tg.png" class="logo-icon" /></a>
+        <span class="logo-we" style="font-family: 'Radwave Demo', Arial, sans-serif !important; font-weight: bold; display: inline-block; color: #800000;">WE</span>
+        <br>
+        <span class="logo-text" style="font-family: 'Radwave Demo', Arial, sans-serif; font-weight: bold; display: inline-block;">reincarnates</span>
+      </div>
+    </header>
+
+    <main>
+      <nav class="main-nav mobile-nav" style="display: flex; justify-content: center; align-items: center; margin: 18px 0 18px 0;">
+        <ul style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 18px; padding: 0; margin: 0;">
+          <li><a href="/" class="nav-link active">Home</a></li>
+          <li><a href="/pricelist/" class="nav-link">Price List</a></li>
+        </ul>
+      </nav>
+      <div class="card" onclick="handleClick(this, 'warlamov')" style="position: relative;">
+        <img class="avatar" src="Images/warlamov.jpg" alt="warlamov" />
+        <img src="Images/click.png" alt="click here" style="position: absolute; top: 8px; right: 8px; width: 28px; height: auto; z-index: 10;" />
+        <h2>warlamov</h2>
+        <div class="role">owner | coder</div>
+        <div class="icons">
+          <a href="https://discordid.netlify.app/?id=1279217258018902128" target="_blank"><img src="Images/discord.png" width="32" /></a>
+          <a href="https://t.me/warlamovreal" target="_blank"><img src="Images/telegram.png" width="32" /></a>
+        </div>
+      </div>
       <div class="card" onclick="handleClick(this, 'mortmode')" style="position: relative;">
         <img class="avatar" src="Images/mortmode.jpg" alt="mortmode" />
         <img src="Images/click.png" alt="click here" style="position: absolute; top: 8px; right: 8px; width: 28px; height: auto; z-index: 10;" />
@@ -287,5 +333,15 @@
 
 
   <script src="script.js"></script>
+
+  <!-- Разделение отображения для ПК/планшетов и мобильных устройств -->
+  <style>
+    .desktop-only { display: block; }
+    .mobile-only { display: none; }
+    @media (max-width: 600px) {
+      .desktop-only { display: none !important; }
+      .mobile-only { display: block !important; }
+    }
+  </style>
 </body>
 </html>

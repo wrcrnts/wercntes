@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="../Images/wr.png" sizes="32x32" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>price list</title>
   <link rel="stylesheet" href="../style.css" />
   <link href="https://fonts.cdnfonts.com/css/radwave-demo" rel="stylesheet">
   <style>
+    /* =================== ПК и планшеты (Desktop & Tablet, ширина > 600px) =================== */
     .price-list-grid {
       display: flex;
       flex-wrap: wrap;
@@ -60,7 +60,6 @@
       outline: none;
       transform: translateY(-4px) scale(1.025);
     }
-
     .price-card .platform-blur {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -93,7 +92,9 @@
       background: rgba(255, 105, 180, 0.22);
       box-shadow: 0 2px 18px 0 rgba(255, 105, 180, 0.18);
     }
-    @media (max-width: 900px) {
+
+    /* =================== Планшеты (Tablet only, 601px - 900px) =================== */
+    @media (min-width: 601px) and (max-width: 900px) {
       .price-list-grid {
         flex-direction: column;
         align-items: center;
@@ -101,6 +102,8 @@
         gap: 24px;
       }
     }
+
+    /* =================== Мобильные устройства (Mobile, <= 600px) =================== */
     @media (max-width: 600px) {
       .price-list-grid {
         flex-direction: column;
@@ -111,7 +114,68 @@
       .price-card {
         min-width: 0;
       }
+      .product-desc {
+        font-size: 1rem;
+        margin-top: 4px;
+      }
+      .card-title {
+        font-size: 1.1rem;
+      }
+      /* ===== Логотип только для мобильных ===== */
+      .mobile-logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 16px;
+        margin-bottom: 0;
+      }
+      .mobile-logo {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        box-shadow: 0 2px 12px 0 rgba(178,34,34,0.13);
+        background: #fff;
+        object-fit: cover;
+      }
+      .main-nav {
+        display: none;
+      }
+      .mobile-nav {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 8px;
+        margin-bottom: 0;
+      }
+      .mobile-nav .nav-link {
+        font-size: 1.1rem;
+        padding: 8px 18px;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.08);
+        color: #b22222;
+        font-family: 'Radwave Demo', Arial, sans-serif !important;
+        font-weight: bold;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+      }
+      .mobile-nav .nav-link.active {
+        background: rgba(255, 105, 180, 0.18);
+        color: #800000;
+      }
+      .center-title {
+        position: static !important;
+        margin-top: 12px !important;
+        margin-bottom: 8px !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        text-align: center;
+        font-size: 1.5rem !important;
+        z-index: auto;
+      }
     }
+
+    /* =================== Очень маленькие экраны (например, старые телефоны) =================== */
     @media (max-width: 420px) {
       .price-list-grid {
         flex-direction: column;
@@ -119,6 +183,8 @@
         max-width: 100%;
       }
     }
+
+    /* =================== Навигация (общие стили) =================== */
     .nav-link {
       text-decoration: none;
       color: #b22222;
@@ -172,8 +238,9 @@
   <link href="https://fonts.googleapis.com/css?family=Inter:400,700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="platform">
-    <!-- header with logo was removed -->
+
+  <!-- =================== ПК и планшеты =================== -->
+  <div class="platform desktop-only">
     <nav class="main-nav">
       <ul>
         <li><a href="/" class="nav-link">Home</a></li>
@@ -236,9 +303,109 @@
         </div>
       </div>
     </main>
-    <!-- Мини-платформы-кнопки теперь под каждой карточкой -->
+  </div>
+
+  <!-- =================== Мобильные устройства =================== -->
+  <div class="platform mobile-only">
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/pricelist/" class="nav-link active">Price List</a></li>
+      </ul>
+    </nav>
+    <h1 class="center-title" style="margin: 0; padding-top: 12px; padding-bottom: 0; text-align: center; position: static; font-size: 1.5rem; color: #fff; font-family: 'Radwave Demo', Arial, sans-serif; font-weight: bold; letter-spacing: 1px;">price list</h1>
+    <main>
+      <div class="price-list-grid">
+        <!-- DEF -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="price-card" data-product="DEF" tabindex="0" style="margin-bottom: 0;">
+            <img class="card-avatar" src="../Images/def.png" alt="DEF" />
+            <div class="card-title">DEF <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| 20$</span></div>
+            <img src="../Images/click.png" alt="click here" class="click-hint-card" />
+            <div class="desc-underline"></div>
+            <div class="product-desc"></div>
+          </div>
+          <button class="mini-buy-btn" data-product="DEF" style="margin-top: 10px;">Купить DEF</button>
+        </div>
+        <!-- ARGUS -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="price-card" data-product="ARGUS" tabindex="0" style="margin-bottom: 0;">
+            <img class="card-avatar" src="../Images/arguslogo.png" alt="ARGUS" />
+            <div class="card-title">ARGUS <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| PM</span></div>
+            <img src="../Images/click.png" alt="click here" class="click-hint-card" />
+            <div class="product-desc"></div>
+          </div>
+          <button class="mini-buy-btn" data-product="ARGUS" style="margin-top: 10px;">Купить ARGUS</button>
+        </div>
+        <!-- DEANON -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="price-card" data-product="DEANON" tabindex="0" style="margin-bottom: 0;">
+            <img class="card-avatar" src="../Images/dnn.png" alt="DEANON" />
+            <div class="card-title">DEANON <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| 4$</span></div>
+            <img src="../Images/click.png" alt="click here" class="click-hint-card" />
+            <div class="product-desc"></div>
+          </div>
+          <button class="mini-buy-btn" data-product="DEANON" style="margin-top: 10px;">Купить DEANON</button>
+        </div>
+        <!-- TROLLING -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="price-card troll" data-product="TROLLING" tabindex="0" style="margin-bottom: 0;">
+            <img class="card-avatar" src="../Images/trolling.png" alt="TROLLING" />
+            <div class="card-title">TROLLING <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| 4$</span></div>
+            <img src="../Images/click.png" alt="click here" class="click-hint-card" />
+            <div class="product-desc"></div>
+          </div>
+          <button class="mini-buy-btn" data-product="TROLLING" style="margin-top: 10px;">Купить TROLLING</button>
+        </div>
+        <!-- INTEL -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="price-card intel" data-product="INTEL" tabindex="0" style="margin-bottom: 0;">
+            <img class="card-avatar" src="../Images/intel.png" alt="INTEL" />
+            <div class="card-title">INTEL <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| 10$</span></div>
+            <img src="../Images/click.png" alt="click here" class="click-hint-card" />
+            <div class="product-desc"></div>
+          </div>
+          <button class="mini-buy-btn" data-product="INTEL" style="margin-top: 10px;">Купить INTEL</button>
+        </div>
+      </div>
+    </main>
   </div>
   <style>
+    /* =================== Платформы: Desktop/Tablet =================== */
+    .platforms-desktop {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin: 24px 0 0 0;
+    }
+    .platforms-mobile {
+      display: none;
+    }
+
+    /* =================== Платформы: Mobile =================== */
+    @media (max-width: 600px) {
+      .platforms-desktop {
+        display: none;
+      }
+      .platforms-mobile {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin: 18px 0 0 0;
+      }
+    }
+
+    /* =================== Платформы: Пример настройки для быстрой правки =================== */
+    /*
+    .platform-link img {
+      border-radius: 8px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .platform-link img:hover {
+      box-shadow: 0 2px 8px 0 rgba(178,34,34,0.18);
+      transform: scale(1.08);
+    }
+    */
     .price-card-content {
       transition: opacity 0.45s cubic-bezier(.4,0,.2,1), filter 0.45s cubic-bezier(.4,0,.2,1);
       opacity: 1;
@@ -490,7 +657,7 @@
     const now = new Date();
     const dateStr = now.toLocaleDateString('ru-RU');
     const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-    const description = `🧾 Услуга: ${product}\n📅 Дата: ${dateStr} ${timeStr}`;
+    const description = `Услуга: ${product}\n📅 Дата: ${dateStr} ${timeStr}`;
 
     const response = await fetch('/api/create-invoice', {
       method: 'POST',

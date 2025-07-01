@@ -1,4 +1,9 @@
-/* Мини-платформы-кнопки под карточками прайс-листа */
+
+/******************************************
+ * ПК и планшеты (Desktop & Tablet styles)
+ ******************************************/
+
+/* --- Мини-платформы-кнопки под карточками прайс-листа --- */
 .mini-buy-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -46,34 +51,8 @@
   box-shadow: 0 2px 8px 0 #ff6fae33;
   transform: scale(0.98);
 }
-@media (max-width: 900px) {
-  .mini-buy-grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 600px;
-  }
-  .mini-buy-btn {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
-}
-@media (max-width: 600px) {
-  .mini-buy-grid {
-    grid-template-columns: 1fr;
-    max-width: 320px;
-    gap: 12px;
-  }
-  .mini-buy-btn {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    font-size: 0.98rem;
-    height: 38px;
-    min-height: 38px;
-    max-height: 38px;
-  }
-}
-/* Плавающее описание платформы в левом верхнем углу */
+
+/* --- Плавающее описание платформы в левом верхнем углу --- */
 .floating-desc {
   position: fixed;
   top: 32px;
@@ -95,6 +74,7 @@
   white-space: pre-line;
 }
 
+/* --- Анимация для курсора в тайпинге --- */
 .typing-caret {
   display: inline-block;
   width: 2px;
@@ -109,6 +89,8 @@
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
 }
+
+/* --- Карточка прайс-листа: базовые стили --- */
 .price-card {
   position: relative;
   overflow: hidden;
@@ -190,19 +172,70 @@ body, html {
   left: 0;
 }
 
-/* Платка — меню с 3 кнопками в правом верхнем углу */
-.platka {
-  position: fixed;
-  top: 24px;
-  right: 32px;
-  z-index: 2001;
-  background: rgba(0,0,0,0.32);
-  backdrop-filter: blur(10px);
-  border-radius: 0 0 0 24px;
-  box-shadow: 0 4px 24px 0 #00ffe733;
-  padding: 0 18px 0 18px;
-}
-@media (max-width: 700px) {
+/* ...existing code... */
+
+
+/******************************************
+ * Мобильные устройства (Mobile styles)
+ ******************************************/
+
+/* Все стили для мобильных устройств строго внутри max-width: 600px! */
+@media (max-width: 600px) {
+  /* --- Мини-платформы: одна колонка, уменьшение --- */
+  .mini-buy-grid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+    gap: 12px;
+  }
+  .mini-buy-btn {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    font-size: 0.98rem;
+    height: 38px;
+    min-height: 38px;
+    max-height: 38px;
+  }
+  /* --- Грид карточек прайс-листа --- */
+  .price-list-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 0 2vw;
+  }
+  /* --- Заголовок --- */
+  .center-title {
+    font-size: 1.3rem;
+    margin: 18px 0 18px 0;
+  }
+  /* --- Карточка прайс-листа: размеры для моб. --- */
+  .price-card {
+    width: 320px !important;
+    min-width: 320px !important;
+    max-width: 320px !important;
+    height: 270px !important;
+    min-height: 270px !important;
+    max-height: 270px !important;
+    padding: 18px 6px 14px 6px;
+  }
+  /* --- Центрирование карточек --- */
+  .cards-center {
+    flex-direction: column;
+    gap: 20px;
+  }
+  /* --- Навигация --- */
+  .main-nav {
+    top: 10px;
+    right: 10px;
+  }
+  .main-nav ul {
+    flex-direction: row;
+    gap: 10px;
+  }
+  .nav-link {
+    font-size: 0.98rem;
+    padding: 7px 10px;
+  }
+  /* --- Платка: адаптация под мобильные --- */
   .platka {
     top: 8px;
     right: 0;
@@ -213,6 +246,121 @@ body, html {
   }
 }
 
+
+
+/******************************************
+ * Desktop only styles
+ ******************************************/
+.desktop-only {
+  display: block;
+}
+.mobile-only {
+  display: none;
+}
+
+/* Все стили для ПК и планшетов только внутри .desktop-only */
+.desktop-only .mini-buy-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+  max-width: 900px;
+  margin: 24px auto 0 auto;
+  justify-items: center;
+}
+.desktop-only .mini-buy-btn {
+  width: 260px;
+  height: 40px;
+  min-width: 260px;
+  max-width: 260px;
+  min-height: 40px;
+  max-height: 40px;
+  background: #b22222;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.08rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px 0 rgba(178,34,34,0.10);
+  margin: 0;
+  padding: 0 12px;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.18s;
+  text-decoration: none;
+  outline: none;
+  position: relative;
+  z-index: 10;
+}
+/* ...другие desktop-only стили (по аналогии, если нужно) ... */
+
+/******************************************
+ * Mobile only styles
+ ******************************************/
+@media (max-width: 600px) {
+  .desktop-only { display: none !important; }
+  .mobile-only { display: block !important; }
+
+  /* Все стили для мобильных только внутри .mobile-only */
+  .mobile-only .mini-buy-grid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+    gap: 12px;
+  }
+  .mobile-only .mini-buy-btn {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    font-size: 0.98rem;
+    height: 38px;
+    min-height: 38px;
+    max-height: 38px;
+  }
+  .mobile-only .price-list-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 0 2vw;
+  }
+  .mobile-only .center-title {
+    font-size: 1.3rem;
+    margin: 18px 0 18px 0;
+  }
+  .mobile-only .price-card {
+    width: 320px !important;
+    min-width: 320px !important;
+    max-width: 320px !important;
+    height: 270px !important;
+    min-height: 270px !important;
+    max-height: 270px !important;
+    padding: 18px 6px 14px 6px;
+  }
+  .mobile-only .cards-center {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .mobile-only .main-nav {
+    top: 10px;
+    right: 10px;
+  }
+  .mobile-only .main-nav ul {
+    flex-direction: row;
+    gap: 10px;
+  }
+  .mobile-only .nav-link {
+    font-size: 0.98rem;
+    padding: 7px 10px;
+  }
+  .mobile-only .platka {
+    top: 8px;
+    right: 0;
+    left: 0;
+    border-radius: 0 0 0 12px;
+    box-shadow: none;
+    padding: 0 2vw;
+  }
+}
 /* Основная платформа по центру */
 .main-platka {
   position: absolute;
@@ -560,7 +708,6 @@ h2, .role {
 }
 
 /* Четкие и неизменяемые размеры для карточек прайс-листа */
-/* Четкие и неизменяемые размеры для карточек прайс-листа */
 .price-card {
   background: rgba(30, 40, 60, 0.22);
   border-radius: 18px;
@@ -738,7 +885,8 @@ h2, .role {
   opacity: 1;
 }
 
-/* Удалены стили мини-платформы-кнопки Купить */
+
+/* --- Удалены стили мини-платформы-кнопки Купить --- */
 
 .cards-center {
   display: flex;
