@@ -1,3 +1,4 @@
+<!-- Удалён ошибочный CSS-текст -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,32 +8,113 @@
   <link rel="stylesheet" href="../style.css" />
   <link href="https://fonts.cdnfonts.com/css/radwave-demo" rel="stylesheet">
   <style>
-    /* =================== ПК и планшеты (Desktop & Tablet, ширина > 600px) =================== */
-    .price-list-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 32px 24px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
+    /* Сброс размеров карточек вне медиазапросов */
     .price-card {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      background: rgba(20,20,30,0.32);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
       transition: box-shadow 0.35s cubic-bezier(.4,0,.2,1), background 0.35s cubic-bezier(.4,0,.2,1), transform 0.25s cubic-bezier(.4,0,.2,1);
       cursor: pointer;
       user-select: none;
+      /* размеры убраны, чтобы перебивались медиазапросами */
     }
+    .card-avatar {
+      display: block;
+    }
+    .card-title {
+      margin-bottom: 8px;
+    }
+    /* =================== ПК и планшеты (Desktop & Tablet, ширина > 600px) =================== */
+    @media (min-width: 601px) {
+      .price-list-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 32px 24px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .price-list-grid > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      .price-card {
+        /* размеры убраны, чтобы карточки были гибкими на планшетах */
+        padding: 18px 14px 14px 14px;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      .card-avatar {
+        max-width: 75px;
+        max-height: 75px;
+        margin-bottom: 8px;
+      }
+      .card-title {
+        font-size: 1.01rem;
+      }
+      .product-desc {
+        min-height: 24px;
+        font-size: 1.01rem;
+        margin-top: 4px;
+      }
+      .center-title {
+        z-index: 10 !important;
+        position: relative !important;
+      }
+    }
+
+    @media (min-width: 901px) {
+      .price-card {
+        width: 260px;
+        height: 310px;
+        padding: 10px 7px 7px 7px;
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+      .card-avatar {
+        max-width: 80px;
+        max-height: 80px;
+        margin-bottom: 16px;
+      }
+      .card-title {
+        font-size: 1.01rem;
+      }
+      .product-desc {
+        min-height: 12px;
+        max-height: 27px;
+        font-size: 1.01rem;
+        margin-top: 4px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+      }
+    }
+    /* =================== Планшеты (Tablet only, 601px - 900px) =================== */
+    /* Удалено для полной идентичности прошлой версии (только flex) */
     .price-card:active {
       background: rgba(255, 105, 180, 0.22);
       box-shadow: 0 2px 18px 0 rgba(255, 105, 180, 0.18);
       transform: scale(0.98);
     }
     .product-desc {
-      min-height: 48px;
       max-width: 100%;
-      font-size: 1.13rem;
       color: #fff;
       font-family: 'JetBrains Mono', monospace;
-      margin-top: 8px;
       line-height: 1.4;
       letter-spacing: 0.01em;
       transition: color 0.2s;
@@ -93,33 +175,55 @@
       box-shadow: 0 2px 18px 0 rgba(255, 105, 180, 0.18);
     }
 
-    /* =================== Планшеты (Tablet only, 601px - 900px) =================== */
-    @media (min-width: 601px) and (max-width: 900px) {
-      .price-list-grid {
-        flex-direction: column;
-        align-items: center;
-        max-width: 600px;
-        gap: 24px;
-      }
-    }
+    /* (удалено, см. выше) */
 
     /* =================== Мобильные устройства (Mobile, <= 600px) =================== */
     @media (max-width: 600px) {
       .price-list-grid {
+        display: flex;
         flex-direction: column;
         align-items: center;
         max-width: 100%;
-        gap: 20px 12px;
+        gap: 12px 0;
+        margin: 18px auto 0 auto;
       }
       .price-card {
+        width: 96vw;
+        max-width: 340px;
         min-width: 0;
+        height: auto;
+        max-height: 220px;
+        min-height: 120px;
+        padding: 10px 4px 8px 4px;
+        border-radius: 12px;
       }
-      .product-desc {
-        font-size: 1rem;
-        margin-top: 4px;
+      .card-avatar {
+        max-width: 95px;
+        max-height: 95px;
+        margin-bottom: 7px;
+      }
+      /* Удалены дублирующие и конфликтующие font-size */
+      .desc-typing {
+        font-size: 1.3rem !important;
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        min-height: 18px;
       }
       .card-title {
-        font-size: 1.1rem;
+        font-size: 1.5rem;
+      }
+      /* Отдельная настройка product-desc для мобильной версии */
+      .product-desc {
+        font-size: 1.02rem !important;
+        max-height: 38px;
+        line-height: 1.3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
       }
       /* ===== Логотип только для мобильных ===== */
       .mobile-logo-container {
@@ -145,33 +249,73 @@
         display: flex;
         justify-content: center;
         gap: 24px;
-        margin-top: 8px;
-        margin-bottom: 0;
+        margin-top: 0 !important;
+        margin-bottom: 16 !important;
       }
       .mobile-nav .nav-link {
         font-size: 1.1rem;
-        padding: 8px 18px;
-        border-radius: 8px;
-        background: rgba(255,255,255,0.08);
+        padding: 8px 22px;
+        border-radius: 12px;
+        background: none;
         color: #b22222;
         font-family: 'Radwave Demo', Arial, sans-serif !important;
         font-weight: bold;
         text-decoration: none;
-        transition: background 0.2s, color 0.2s;
+        box-shadow: none;
+        letter-spacing: 1px;
+        border: none;
+        outline: none;
+        transition: background 0.22s, color 0.22s, box-shadow 0.22s, transform 0.18s;
+        position: relative;
+        margin-bottom: 0;
       }
       .mobile-nav .nav-link.active {
-        background: rgba(255, 105, 180, 0.18);
-        color: #800000;
+        background: #b22222;
+        color: #fff;
+        box-shadow: 0 2px 12px 0 rgba(178,34,34,0.18);
+        transform: translateY(-2px) scale(1.04);
+      }
+      .mobile-nav .nav-link:not(.active):hover,
+      .mobile-nav .nav-link:not(.active):focus {
+        background: rgba(255, 105, 180, 0.13);
+        color: #b22222;
+        box-shadow: 0 2px 10px 0 rgba(255, 105, 180, 0.13);
+        transform: translateY(-1px) scale(1.03);
+      }
+      .mobile-nav .nav-link:active {
+        background: #b22222;
+        color: #fff;
+        box-shadow: 0 2px 14px 0 rgba(255, 105, 180, 0.18);
+        transform: scale(0.98);
+      }
+      .mobile-nav .nav-link {
+        /* анимация появления */
+        opacity: 0;
+        animation: navBtnFadeIn 0.7s cubic-bezier(.4,0,.2,1) forwards;
+      }
+      .mobile-nav .nav-link:nth-child(1) { animation-delay: 0.08s; }
+      .mobile-nav .nav-link:nth-child(2) { animation-delay: 0.18s; }
+      @keyframes navBtnFadeIn {
+        from { opacity: 0; transform: translateY(-12px) scale(0.98); }
+        to { opacity: 1; transform: none; }
       }
       .center-title {
         position: static !important;
-        margin-top: 12px !important;
-        margin-bottom: 8px !important;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-        text-align: center;
-        font-size: 1.5rem !important;
-        z-index: auto;
+        display: block !important;
+        width: 100%;
+        margin: 18px auto 12px auto !important;
+        padding: 0 !important;
+        text-align: center !important;
+        font-size: 2.2rem !important;
+        color: #fff;
+        font-family: 'Radwave Demo', Arial, sans-serif;
+        font-weight: bold;
+        letter-spacing: 1px;
+        background: none !important;
+        box-shadow: none !important;
+      }
+      main {
+        margin-top: 0 !important;
       }
     }
 
@@ -252,7 +396,7 @@
       <div class="price-list-grid">
         <!-- DEF -->
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <div class="price-card" data-product="DEF" tabindex="0" style="margin-bottom: 0;">
+          <div class="price-card" data-product="DEF" tabindex="0" style="margin-bottom: 0 !important; width: 210px !important; height: 210px !important; min-width: 0 !important; min-height: 0 !important; max-width: none !important; max-height: none !important;">
             <img class="card-avatar" src="../Images/def.png" alt="DEF" />
             <div class="card-title">DEF <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| 20$</span></div>
             <img src="../Images/click.png" alt="click here" class="click-hint-card" />
@@ -263,7 +407,7 @@
         </div>
         <!-- ARGUS -->
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <div class="price-card" data-product="ARGUS" tabindex="0" style="margin-bottom: 0;">
+          <div class="price-card" data-product="ARGUS" tabindex="0" style="margin-bottom: 0 !important; width: 210px !important; height: 210px !important; min-width: 0 !important; min-height: 0 !important; max-width: none !important; max-height: none !important;">
             <img class="card-avatar" src="../Images/arguslogo.png" alt="ARGUS" />
             <div class="card-title">ARGUS <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| PM</span></div>
             <img src="../Images/click.png" alt="click here" class="click-hint-card" />
@@ -273,7 +417,7 @@
         </div>
         <!-- DEANON -->
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <div class="price-card" data-product="DEANON" tabindex="0" style="margin-bottom: 0;">
+          <div class="price-card" data-product="DEANON" tabindex="0" style="margin-bottom: 0 !important; width: 210px !important; height: 210px !important; min-width: 0 !important; min-height: 0 !important; max-width: none !important; max-height: none !important;">
             <img class="card-avatar" src="../Images/dnn.png" alt="DEANON" />
             <div class="card-title">DEANON <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| 4$</span></div>
             <img src="../Images/click.png" alt="click here" class="click-hint-card" />
@@ -283,7 +427,7 @@
         </div>
         <!-- TROLLING -->
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <div class="price-card troll" data-product="TROLLING" tabindex="0" style="margin-bottom: 0;">
+          <div class="price-card troll" data-product="TROLLING" tabindex="0" style="margin-bottom: 0 !important; width: 210px !important; height: 210px !important; min-width: 0 !important; min-height: 0 !important; max-width: none !important; max-height: none !important;">
             <img class="card-avatar" src="../Images/trolling.png" alt="TROLLING" />
             <div class="card-title">TROLLING <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| 4$</span></div>
             <img src="../Images/click.png" alt="click here" class="click-hint-card" />
@@ -293,7 +437,7 @@
         </div>
         <!-- INTEL -->
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <div class="price-card intel" data-product="INTEL" tabindex="0" style="margin-bottom: 0;">
+          <div class="price-card intel" data-product="INTEL" tabindex="0" style="margin-bottom: 0 !important; width: 210px !important; height: 210px !important; min-width: 0 !important; min-height: 0 !important; max-width: none !important; max-height: none !important;">
             <img class="card-avatar" src="../Images/intel.png" alt="INTEL" />
             <div class="card-title">INTEL <span style="color:#b22222;font-weight:800;font-family:'Inter','Roboto',Arial,sans-serif;">| 10$</span></div>
             <img src="../Images/click.png" alt="click here" class="click-hint-card" />
@@ -307,13 +451,14 @@
 
   <!-- =================== Мобильные устройства =================== -->
   <div class="platform mobile-only">
-    <nav class="main-nav">
-      <ul>
+    <h1 class="center-title" style="margin: 0; padding-top: 12px; padding-bottom: 0; text-align: center; position: static; font-size: 2.2rem; color: #fff; font-family: 'Radwave Demo', Arial, sans-serif; font-weight: bold; letter-spacing: 1px;">PRICE LIST</h1>
+    <nav class="main-nav mobile-nav" style="display: flex; justify-content: center; align-items: center; width: 100%; margin: 60px 0 18px 0 !important;">
+      <ul style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 18px; padding: 0; margin: 0; width: 100%;">
         <li><a href="/" class="nav-link">Home</a></li>
         <li><a href="/pricelist/" class="nav-link active">Price List</a></li>
       </ul>
     </nav>
-    <h1 class="center-title" style="margin: 0; padding-top: 12px; padding-bottom: 0; text-align: center; position: static; font-size: 1.5rem; color: #fff; font-family: 'Radwave Demo', Arial, sans-serif; font-weight: bold; letter-spacing: 1px;">price list</h1>
+    <div style="height: 18px;"></div>
     <main>
       <div class="price-list-grid">
         <!-- DEF -->
@@ -421,10 +566,10 @@
       top: 18px;
       left: 18px;
       right: 18px;
-      min-height: 48px;
+      min-height: 24px;
       color: #fff;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 1.13rem;
+      font-size: 0.890rem;
       font-weight: bold;
       background: none;
       z-index: 10;

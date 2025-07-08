@@ -13,10 +13,10 @@
   justify-items: center;
 }
 .mini-buy-btn {
-  width: 260px;
+  width: 210px;
   height: 40px;
-  min-width: 260px;
-  max-width: 260px;
+  min-width: 210px;
+  max-width: 210px;
   min-height: 40px;
   max-height: 40px;
   background: #b22222;
@@ -244,6 +244,24 @@ body, html {
     box-shadow: none;
     padding: 0 2vw;
   }
+
+  /* --- Сделать блюр шире для мобильных устройств --- */
+  .platform.mobile-only {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    min-width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 0;
+    backdrop-filter: blur(24px);
+    background-color: rgba(0, 0, 0, 0.44);
+  }
 }
 
 
@@ -268,10 +286,10 @@ body, html {
   justify-items: center;
 }
 .desktop-only .mini-buy-btn {
-  width: 260px;
+  width: 210px;
   height: 40px;
-  min-width: 260px;
-  max-width: 260px;
+  min-width: 210px;
+  max-width: 210px;
   min-height: 40px;
   max-height: 40px;
   background: #b22222;
@@ -359,6 +377,24 @@ body, html {
     border-radius: 0 0 0 12px;
     box-shadow: none;
     padding: 0 2vw;
+  }
+
+  /* Увеличиваем ширину блюра и делаем его всегда по всей ширине экрана */
+  .platform.mobile-only {
+    position: fixed;
+    left: -20vw;
+    width: 140vw;
+    min-width: 140vw;
+    max-width: 140vw;
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    backdrop-filter: blur(10px); /* вернули стандартную силу блюра */
+    background-color: rgba(0,0,0,0.44);
+    top: 0;
+    z-index: 9999;
   }
 }
 /* Основная платформа по центру */
